@@ -3,25 +3,29 @@ console.log('js file is connected');
 
 
 
+
 const pizzaImageSectionTag = document.getElementById('all_pizzas');
 const leftPizzaImageTag = document.getElementById('left_pizza_img');
 const rightPizzaImageTag = document.getElementById('right_pizza_img');
 
 let totalClicks = 0;
 
+
 let leftPizzaOnThePage = null;
 let rightPizzaOnThePage = null;
+
 
 const PizzaPicture = function(name, imageSrc){
   this.name = name;
   this.url = imageSrc;
-
+  
   this.clicks = 0;
   this.timesShown = 0;
-
+ 
   PizzaPicture.allImages.push(this);
 };
 PizzaPicture.allImages = [];
+
 
 
 
@@ -50,10 +54,11 @@ const pickNewPizzas = function(){
 
 
 const handleClickOnPizza = function(event){
-  console.log('Lets handle the click now');
+  console.log('Lets handle the click now... Still.');
   console.log('left pizza on the page. ', leftPizzaOnThePage);
 
   if( totalClicks < 5){
+    
 
     const thingWeClickedOn = event.target;
     console.log('event target', event.target);
@@ -91,6 +96,9 @@ const handleClickOnPizza = function(event){
 pizzaImageSectionTag.addEventListener('click', handleClickOnPizza);
 
 
+
+
+
 new PizzaPicture('Brick Oven Pizza', 'images/brickOvenPizza.jpeg');
 new PizzaPicture('Calzone', 'images/calzonePizza.jpeg');
 new PizzaPicture('Chicago Deep Dish', 'images/chicagoPizza.jpeg');
@@ -102,6 +110,7 @@ new PizzaPicture('Detroit Style', 'images/sgDansHtossedMeatLovPizza.jpg');
 
 
 leftPizzaOnThePage = PizzaPicture.allImages[3];
-rightPizzaOnThePage = PizzaPicture.allimages[0];
+rightPizzaOnThePage = PizzaPicture.allImages[0];
+
 
 pickNewPizzas();

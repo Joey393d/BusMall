@@ -39,6 +39,46 @@
                <h2 id="right_pizza_h2">Vote Five Times!</h2>
             </div>
          </section>
+
+
+         <div>
+            <canvas id="myChart"></canvas>
+          </div>
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+          <script>
+             const labels = [
+  'Calzone',
+  'Chicago Deep Dish',
+  'Chicago Pizza and Oven Grinder',
+  'Detroit Style',
+  'Papa Vitos',
+  'New York Thin',
+
+];
+const data = {
+  labels: labels,
+  datasets: [{
+    label: 'My First dataset',
+    backgroundColor: 'rgb(255, 99, 132)',
+    borderColor: 'rgb(255, 99, 132)',
+    data: [],
+  }]
+};
+const config = {
+  type: 'line',
+  data,
+  options: {}
+};
+            // === include 'setup' then 'config' above ===
+          
+            var myChart = new Chart(
+              document.getElementById('myChart'),
+              config
+            );
+          </script>
+
+
       </main>
       <footer>
          <p>Vote on some pizza!</p>
