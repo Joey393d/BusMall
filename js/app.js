@@ -1,107 +1,209 @@
 'use strict';
-console.log('js file is connected');
+console.log('app.js is now connected');
+
+let imageElements = document.getElementsByTagName('img');
 
 
 
-const pizzaImageSectionTag = document.getElementById('all_pizzas');
-const leftPizzaImageTag = document.getElementById('left_pizza_img');
-const rightPizzaImageTag = document.getElementById('right_pizza_img');
+let productIndex1 = 0;
+let productIndex2 = 1;
+let productIndex3 = 2;
+
+let rounds = 7;
+let allProducts = [];
+
+//Constructor  
+function Product(name, imageURL, timesClicked, timesShown){
+  this.name = name;
+  this.imageURL = imageURL;
+  if(timesClicked){
+    this.timesClicked = timesClicked;
+  } else {
+    this.timesClicked = 0;
+  }
+  if(timesShown){
+    this.timesShown = timesShown;
+  } else {
+    this.timesShown = 0;
+  }
+  allProducts.push(this);
+}
+console.log(allProducts);
+
+
+function getProductArray(nameOfThePropertyIWant){
+  let answer = [];
+  for(let i = 0; i < allProducts.length; i++){
+    answer[i] = allProducts[i][nameOfThePropertyIWant];
+  }
+
+  console.log(answer);
+  return answer;
+}
+
+
+let savedProductString = localStorage.getItem('savedProduct')
+
+
+if(savedProductString){
+  let arrayOfNotProductObject = JSON.parse(savedPizzaString);
+  console.log('if condition wat is our type ',arrayOfNotProductObject);
+  for(let j= 0; j < arrayOfNotProductObject.length; j++){
+    new Product(
+      arrayOfNotProductObject[j].name,
+      arrayOfNotProductObject[j].imageURL,
+      arrayOfNotProductObject[j].timesClicked,
+      arrayOfNotProductObject[j].timesShown
+    );
+  }
+} else {
+  new Product('banana', 'images/banana holder.jpg');
+new Product('bandage', 'images/bandage.jpg');
+new Product('dogBeak', 'images/dogBeak.jpg');
+new Product('fart', 'images/fart.jpg');
+new Product('matt', 'images/matt.jpg');
+new Product('meat', 'images/meatPop.jpg');
+new Product('pet', 'images/petButler.jpg');
+new Product('pickle', 'images/pickle.jpg');
+new Product('speakers', 'images/speakers.jpg');
+new Product('TP', 'images/TP.jpg');
+new Product('trump', 'images/Trump.jpg');
+new Product('what', 'images/what.jpg');
+}
+allProducts[0].timesShown = 1;
+allProducts[1].timesShown = 1;
+
+
+
+
+
+// products go here
+
+
+
+
 
 let totalClicks = 0;
 
-let leftPizzaOnThePage = null;
-let rightPizzaOnThePage = null;
 
-const PizzaPicture = function(name, imageSrc){
-  this.name = name;
-  this.url = imageSrc;
+function imageWasClicked(event){
+  console.log(' click event',event);
 
-  this.clicks = 0;
-  this.timesShown = 0;
+totalClicks = totalClicks + 1;
 
-  PizzaPicture.allImages.push(this);
-};
-PizzaPicture.allImages = [];
+if(event.srcElement.id === '1'){
+  allProducts[productIndex1].timesClicked++;
+} else if(event.srcElement.id === '2'){
+  allProducts[productIndex2].timesClicked++;
+}
 
 
+let nextProductIndex1 = Math.floor(Math.random() * allProducts.length);
+let nextProductIndex2 = Math.floor(Math.random() * allProducts.length);
+let nextProductIndex3 = Math.floor(Math.random() * allProducts.length);
 
-const renderNewPizzas = function(leftIndex, rightIndex){
-  console.log('create the image src="X" for left and right images', leftIndex);
-  console.log('PizzaPicture.allImages[leftIndex].url;', PizzaPicture.allImages[leftIndex].url);
-  leftPizzaImageTag.src = PizzaPicture.allImages[leftIndex].url;
-  rightPizzaImageTag.src = PizzaPicture.allImages[rightIndex].url;
-};
+while((nextProductIndex1 === productIndex1)     ||
+      (nextProductIndex1 === productIndex2)     || 
+      (nextProductIndex1 === productIndex3)     || 
+      (nextProductIndex1 === nextProductIndex2) || 
+      (nextProductIndex1 === nextProductIndex3)  
+){
+  nextProductIndex1 = Math.floor(Math.random() * allProducts.length);
+}
+while(
+  (nextProductIndex2 === productIndex1) || 
+  (nextProductIndex2 === productIndex2) || 
+  (nextProductIndex2 === productIndex3) ||
+  (nextProductIndex2 === nextProductIndex1) ||
+  (nextProductIndex2 === nextProductIndex3)
+  ){
+  nextProductIndex2 = Math.floor(Math.random() * allProducts.length);
+}
+while(
+   (nextProductIndex3 === productIndex1) ||
+   (nextProductIndex3 === productIndex2) ||
+   (nextProductIndex3 === productIndex3) ||
+   (nextProductIndex3 === nextProductIndex1) ||
+   (nextProductIndex3 === nextProductIndex2)
+  
+  ){
+  nextProductIndex3 = Math.floor(Math.random() * allProducts.length);
+}
 
 
-const pickNewPizzas = function(){
-  const leftIndex = Math.floor(Math.random() * PizzaPicture.allImages.length);
-  console.log('leftIndex', leftIndex);
-  let rightIndex;
-  do{
-    rightIndex = Math.floor(Math.random() * PizzaPicture.allImages.length);
-  } while(rightIndex === leftIndex);
-  console.log(PizzaPicture.allImages[leftIndex].name + ' and ' + PizzaPicture.allImages[rightIndex].name);
-  leftPizzaOnThePage = PizzaPicture.allImages[leftIndex];
-  rightPizzaOnThePage = PizzaPicture.allImages[rightIndex];
-  renderNewPizzas(leftIndex,rightIndex);
-};
+productIndex1 = nextProductIndex1;
+productIndex2 = nextProductIndex2;
+productIndex3 = nextProductIndex3;
 
 
 
 
-const handleClickOnPizza = function(event){
-  console.log('Lets handle the click now');
-  console.log('left pizza on the page. ', leftPizzaOnThePage);
 
-  if( totalClicks < 5){
+ 
+imageElements[0].src = allProducts[productIndex1].imageURL;
+  allProducts[productIndex1].timesShown++;
+  
+  imageElements[1].src = allProducts[productIndex2].imageURL;
+  allProducts[productIndex2].timesShown++;
 
-    const thingWeClickedOn = event.target;
-    console.log('event target', event.target);
-    const id = thingWeClickedOn.id;
-    console.log('thingWeClickedOn', thingWeClickedOn);
-    console.log('this is the id ddddd',id);
+  imageElements[2].src = allProducts[productIndex3].imageURL;
+  allProducts[productIndex3].timesShown++;
 
-    if(id === 'left_pizza_img' || id === 'right_pizza_img'){
-      
-      if(id === 'left_pizza_img'){
-        console.log('left pizza on the page.', leftPizzaOnThePage);
-        leftPizzaOnThePage.clicks++;
-      }
-      if(id === 'right_pizza_img'){
-        console.log('right pizza on the page.', rightPizzaOnThePage);
 
-        rightPizzaOnThePage.clicks++;
-      }
-      console.log('left pizza on the page. ', leftPizzaOnThePage);
-      leftPizzaOnThePage.timesShown++;
-      rightPizzaOnThePage.timesShown++;
-      pickNewPizzas();
-    }
-    console.log('is this running ',event.target.id);
+
+
+
+if(totalClicks >= rounds){
+  
+  
+  let asideUL = document.getElementById('voteResults');
+
+
+   
+
+  for(let i = 0; i < allProducts.length; i ++){
+    
+  }//closes the for loop
+  
+ 
+  for(let i = 0; i < imageElements.length; i++){
+    imageElements[i].removeEventListener('click', imageWasClicked);
+    console.log('is this thing working?');
   }
-  totalClicks++;
-  if(totalClicks === 5){
-    pizzaImageSectionTag.removeEventListener('click', handleClickOnPizza);
-    console.log('the vote has ended. and remove listener works. ');
+  //run chart
+  // runMyChartsNow();
+
   }
-
-};
-
-
-pizzaImageSectionTag.addEventListener('click', handleClickOnPizza);
+} 
 
 
-new PizzaPicture('Brick Oven Pizza', 'images/brickOvenPizza.jpeg');
-new PizzaPicture('Calzone', 'images/calzonePizza.jpeg');
-new PizzaPicture('Chicago Deep Dish', 'images/chicagoPizza.jpeg');
-new PizzaPicture('Chicago Pizza and Oven Grinder', 'images/cpoGinderPizza.jpeg');
-new PizzaPicture('Detroit Style', 'images/detroitPizza.jpeg');
-new PizzaPicture('Papa Vito\'s Thin', 'images/mwDeluxePizzaThinCrust.jpg');
-new PizzaPicture('New York Thin', 'images/newYorkPizza.jpeg');
-new PizzaPicture('Detroit Style', 'images/sgDansHtossedMeatLovPizza.jpg');
 
 
-leftPizzaOnThePage = PizzaPicture.allImages[3];
-rightPizzaOnThePage = PizzaPicture.allimages[0];
 
-pickNewPizzas();
+
+
+
+
+
+
+
+
+
+//add the canvas chart 
+
+// function runMyChartsNow(){
+
+ //}
+
+
+
+
+
+
+
+
+//add listener to images 
+for(let i = 0; i < imageElements.length; i++){
+  imageElements[i].addEventListener('click', imageWasClicked);
+  console.log('is this thing working?');
+}
