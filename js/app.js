@@ -1,31 +1,63 @@
 'use strict';
 console.log('app.js is now connected');
 
-let imageElement = document.getElementsByTagName('img');
+let imageElements = document.getElementsByTagName('img');
+
 
 
 let productIndex1 = 0;
 let productIndex2 = 1;
 let productIndex3 = 2;
 
-
-let rounds = 5;
+let rounds = 7;
 let allProducts = [];
 
-function Product(name, imageURL){
+//Constructor  
+function Product(name, imageURL, timesClicked, timesShown){
   this.name = name;
   this.imageURL = imageURL;
-  this.timesClicked = 0;
-  this.timesShown = 0;
+  if(timesClicked){
+    this.timesClicked = timesClicked;
+  } else {
+    this.timesClicked = 0;
+  }
+  if(timesShown){
+    this.timesShown = timesShown;
+  } else {
+    this.timesShown = 0;
+  }
   allProducts.push(this);
 }
-console.log('this is all of the products made by constructor',allProducts);
+console.log(allProducts);
 
 
+function getProductArray(nameOfThePropertyIWant){
+  let answer = [];
+  for(let i = 0; i < allProducts.length; i++){
+    answer[i] = allProducts[i][nameOfThePropertyIWant];
+  }
 
-/////put products here
+  console.log(answer);
+  return answer;
+}
 
-new Product('banana', 'images/banana holder.jpg');
+
+let savedProductString = localStorage.getItem('savedProduct')
+
+
+if(savedProductString){
+  let arrayOfNotProductObject = JSON.parse(savedPizzaString);
+  console.log('if condition wat is our type ',arrayOfNotProductObject);
+  for(let j= 0; j < arrayOfNotProductObject.length; j++){
+    new Product(
+      arrayOfNotProductObject[j].name,
+      arrayOfNotProductObject[j].imageURL,
+      arrayOfNotProductObject[j].timesClicked,
+      arrayOfNotProductObject[j].timesShown
+    );
+  }
+} else {
+  new Product('banana', 'images/banana holder.jpg');
 new Product('bandage', 'images/bandage.jpg');
 new Product('dogBeak', 'images/dogBeak.jpg');
 new Product('fart', 'images/fart.jpg');
@@ -37,16 +69,35 @@ new Product('speakers', 'images/speakers.jpg');
 new Product('TP', 'images/TP.jpg');
 new Product('trump', 'images/Trump.jpg');
 new Product('what', 'images/what.jpg');
+}
+allProducts[0].timesShown = 1;
+allProducts[1].timesShown = 1;
+
+
+
+
+
+// products go here
+
+
+
 
 
 let totalClicks = 0;
 
+
 function imageWasClicked(event){
   console.log(' click event',event);
-//count total clicks
+
 totalClicks = totalClicks + 1;
 
-//choose new images to render from click to click
+if(event.srcElement.id === '1'){
+  allProducts[productIndex1].timesClicked++;
+} else if(event.srcElement.id === '2'){
+  allProducts[productIndex2].timesClicked++;
+}
+
+
 let nextProductIndex1 = Math.floor(Math.random() * allProducts.length);
 let nextProductIndex2 = Math.floor(Math.random() * allProducts.length);
 let nextProductIndex3 = Math.floor(Math.random() * allProducts.length);
@@ -80,11 +131,15 @@ while(
 }
 
 
-
 productIndex1 = nextProductIndex1;
 productIndex2 = nextProductIndex2;
 productIndex3 = nextProductIndex3;
 
+
+
+
+
+ 
 imageElements[0].src = allProducts[productIndex1].imageURL;
   allProducts[productIndex1].timesShown++;
   
@@ -97,24 +152,57 @@ imageElements[0].src = allProducts[productIndex1].imageURL;
 
 
 
-  if(totalClicks >= rounds){
-    let asideUL = document.getElementById('voteResults');
+
+if(totalClicks >= rounds){
+  
+  
+  let asideUL = document.getElementById('voteResults');
 
 
-    for(let i = 0; i < imageeElements.length; i++){
+   
 
-    }
-    for(let i = 0; i < imageElements.length; i++){
-      imageElements[i].removeEventListener('click', imageWasClicked);
-      console.log('is this thing working?');
-    }
+  for(let i = 0; i < allProducts.length; i ++){
+    
+  }//closes the for loop
+  
+ 
+  for(let i = 0; i < imageElements.length; i++){
+    imageElements[i].removeEventListener('click', imageWasClicked);
+    console.log('is this thing working?');
   }
-}
+  //run chart
+  // runMyChartsNow();
+
+  }
+} 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+//add the canvas chart 
+
+// function runMyChartsNow(){
+
+ //}
+
+
+
+
+
+
+
+
+//add listener to images 
 for(let i = 0; i < imageElements.length; i++){
   imageElements[i].addEventListener('click', imageWasClicked);
   console.log('is this thing working?');
