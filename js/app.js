@@ -155,14 +155,27 @@ imageElements[0].src = allProducts[productIndex1].imageURL;
 
 if(totalClicks >= rounds){
   
-  
+  localStorage.setItem('savedProduct', JSON.stringify(allProducts));
+
   let asideUL = document.getElementById('voteResults');
 
 
    
 
   for(let i = 0; i < allProducts.length; i ++){
-    
+    let voteResultListItem = document.createElement('li');
+    voteResultListItem.textContent = `${allProducts[i].name} was clicked on ${allProducts[i].timesClicked} times and was shown ${allProducts[i]} times `;
+    asideUL.appendChild(voteResultListItem);
+
+    let percentageListItem = document.createElement('li');
+    let math;
+    if(allProducts[i].timesClicked === 0){
+      math = `Zero click and shown ${allProducts[i].timesShown} times.`;
+    } else {
+      math = Math.round(((allProducts[i]['timesClicked']/ allProducts[i]['timesShown']).toFixed(2) * 100)) + '%';
+    }
+    percentageListItem.textContent = `${allProducts[i].name} percentage of times clicked vs times shown is ` + math;
+    asideUL.appendChild(percentageListItem);
   }//closes the for loop
   
  
@@ -171,11 +184,51 @@ if(totalClicks >= rounds){
     console.log('is this thing working?');
   }
   //run chart
-  // runMyChartsNow();
+  runMyChartsNow();
 
   }
 } 
 
+
+function runMyChartsNow(){
+
+  let ctx = document.getElementById('myChart').getContext('2d');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: getProductArray('name'),
+      datasets: [{
+        label: '# of Votes',
+        data: getProductArray('timesClicked'),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
 
 
 
@@ -207,3 +260,4 @@ for(let i = 0; i < imageElements.length; i++){
   imageElements[i].addEventListener('click', imageWasClicked);
   console.log('is this thing working?');
 }
+
