@@ -57,7 +57,7 @@ if(savedProductString){
     );
   }
 } else {
-  new Product('banana', 'images/banana holder.jpg');
+new Product('banana', 'images/banana holder.jpg');
 new Product('bandage', 'images/bandage.jpg');
 new Product('dogBeak', 'images/dogBeak.jpg');
 new Product('fart', 'images/fart.jpg');
