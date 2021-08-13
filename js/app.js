@@ -46,7 +46,7 @@ let savedProductString = localStorage.getItem('savedProduct')
 
 
 if(savedProductString){
-  let arrayOfNotProductObject = JSON.parse(savedPizzaString);
+  let arrayOfNotProductObject = JSON.parse(savedProductString);
   console.log('if condition wat is our type ',arrayOfNotProductObject);
   for(let j= 0; j < arrayOfNotProductObject.length; j++){
     new Product(
